@@ -264,7 +264,7 @@ namespace SincApiSefaz
             {
                 const string url = "https://www.unimake.com.br/downloads/tabela_nbs.json";
 
-                var json = "";
+                var json = string.Empty;
                 if (url.Length > 0)
                 {
                     json = await ImportacaoTabNbs.BaixarJsonOnline(url);
@@ -275,7 +275,7 @@ namespace SincApiSefaz
                 {
                     using (var dialogo = new OpenFileDialog())
                     {
-                        var caminhoArquivo = dialogo.ShowDialog() == DialogResult.OK ? dialogo.FileName : "";
+                        var caminhoArquivo = dialogo.ShowDialog() == DialogResult.OK ? dialogo.FileName : string.Empty;
                         if (!string.IsNullOrWhiteSpace(caminhoArquivo))
                         {
                             json = await File.ReadAllTextAsync(caminhoArquivo);
@@ -296,6 +296,26 @@ namespace SincApiSefaz
             {
                 MessageBox.Show($"Erro ao importar classificações tributárias: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void btnTabIndOp_Click(object sender, EventArgs e)
+        {
+            var caminhoArquivo = string.Empty;
+            using (var dialogo = new OpenFileDialog())
+            {
+                caminhoArquivo = dialogo.ShowDialog() == DialogResult.OK ? dialogo.FileName : "";
+            }
+
+            if (string.IsNullOrWhiteSpace(caminhoArquivo))
+                throw new FileNotFoundException("Arquivo não encontrado");
+
+            var dados = ImportacaoTabIndicadorDaOperacao.LerExcel(caminhoArquivo);
+
+            ImportacaoTabIndicadorDaOperacao.AtualizarTabIndOp(dados);
+
+
+
+
         }
     }
 }

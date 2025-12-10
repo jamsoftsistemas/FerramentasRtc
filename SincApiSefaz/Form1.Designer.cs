@@ -31,12 +31,13 @@
             BtnSincronizarMunicipios = new Button();
             BtnSituacaoTributaria = new Button();
             groupBox1 = new GroupBox();
+            btnTabIndOp = new Button();
+            btnTabNBS = new Button();
             btnImportarNcm = new Button();
             btnExportarCClassTrib = new Button();
             btnClassTrib031025 = new Button();
             BtnClassificacaoTributaria = new Button();
             button1 = new Button();
-            btnTabNBS = new Button();
             groupBox1.SuspendLayout();
             SuspendLayout();
             // 
@@ -62,6 +63,7 @@
             // 
             // groupBox1
             // 
+            groupBox1.Controls.Add(btnTabIndOp);
             groupBox1.Controls.Add(btnTabNBS);
             groupBox1.Controls.Add(btnImportarNcm);
             groupBox1.Controls.Add(btnExportarCClassTrib);
@@ -75,6 +77,26 @@
             groupBox1.TabIndex = 2;
             groupBox1.TabStop = false;
             groupBox1.Text = "Sincronizações";
+            // 
+            // btnTabIndOp
+            // 
+            btnTabIndOp.Location = new Point(159, 141);
+            btnTabIndOp.Name = "btnTabIndOp";
+            btnTabIndOp.Size = new Size(207, 23);
+            btnTabIndOp.TabIndex = 7;
+            btnTabIndOp.Text = "Ler - AnexoVII-IndOp_IBSCBS (.xlsx)";
+            btnTabIndOp.UseVisualStyleBackColor = true;
+            btnTabIndOp.Click += btnTabIndOp_Click;
+            // 
+            // btnTabNBS
+            // 
+            btnTabNBS.Location = new Point(6, 141);
+            btnTabNBS.Name = "btnTabNBS";
+            btnTabNBS.Size = new Size(135, 23);
+            btnTabNBS.TabIndex = 6;
+            btnTabNBS.Text = "Ler - Tabla NBS (.json)";
+            btnTabNBS.UseVisualStyleBackColor = true;
+            btnTabNBS.Click += btnTabNBS_Click;
             // 
             // btnImportarNcm
             // 
@@ -125,16 +147,6 @@
             button1.Text = "button1";
             button1.UseVisualStyleBackColor = true;
             // 
-            // btnTabNBS
-            // 
-            btnTabNBS.Location = new Point(6, 141);
-            btnTabNBS.Name = "btnTabNBS";
-            btnTabNBS.Size = new Size(124, 23);
-            btnTabNBS.TabIndex = 6;
-            btnTabNBS.Text = "Ler - Tabela NBS (Json)";
-            btnTabNBS.UseVisualStyleBackColor = true;
-            btnTabNBS.Click += btnTabNBS_Click;
-            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -159,5 +171,6 @@
         private Button btnImportarNcm;
         private Button button1;
         private Button btnTabNBS;
+        private Button btnTabIndOp;
     }
 }
