@@ -36,6 +36,7 @@
             btnClassTrib031025 = new Button();
             BtnClassificacaoTributaria = new Button();
             button1 = new Button();
+            btnTabNBS = new Button();
             groupBox1.SuspendLayout();
             SuspendLayout();
             // 
@@ -61,6 +62,7 @@
             // 
             // groupBox1
             // 
+            groupBox1.Controls.Add(btnTabNBS);
             groupBox1.Controls.Add(btnImportarNcm);
             groupBox1.Controls.Add(btnExportarCClassTrib);
             groupBox1.Controls.Add(btnClassTrib031025);
@@ -69,7 +71,7 @@
             groupBox1.Controls.Add(BtnSituacaoTributaria);
             groupBox1.Location = new Point(14, 14);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(597, 144);
+            groupBox1.Size = new Size(550, 179);
             groupBox1.TabIndex = 2;
             groupBox1.TabStop = false;
             groupBox1.Text = "Sincronizações";
@@ -123,6 +125,16 @@
             button1.Text = "button1";
             button1.UseVisualStyleBackColor = true;
             // 
+            // btnTabNBS
+            // 
+            btnTabNBS.Location = new Point(6, 141);
+            btnTabNBS.Name = "btnTabNBS";
+            btnTabNBS.Size = new Size(124, 23);
+            btnTabNBS.TabIndex = 6;
+            btnTabNBS.Text = "Ler - Tabela NBS (Json)";
+            btnTabNBS.UseVisualStyleBackColor = true;
+            btnTabNBS.Click += btnTabNBS_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -146,5 +158,6 @@
         private Button btnExportarCClassTrib;
         private Button btnImportarNcm;
         private Button button1;
+        private Button btnTabNBS;
     }
 }

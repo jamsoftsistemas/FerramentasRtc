@@ -2,6 +2,7 @@ using ClosedXML.Excel;
 using DocumentFormat.OpenXml.Math;
 using Microsoft.Win32;
 using SincApiSefaz.Dto;
+using SincApiSefaz.Models.TabNBS;
 using SincApiSefaz.Models.TabNcm;
 using SincApiSefaz.Repositorios;
 using SincApiSefaz.Servicos;
@@ -81,7 +82,7 @@ namespace SincApiSefaz
 
                 foreach (var classificacao in classificacoes)
                 {
-                    classificacao.IndRedutorBase = csts.FirstOrDefault(x => x.CstIbsCbs == classificacao.CstIbsCbs)?.IndRedutorBC == 1;                  
+                    classificacao.IndRedutorBase = csts.FirstOrDefault(x => x.CstIbsCbs == classificacao.CstIbsCbs)?.IndRedutorBC == 1;
                 }
                 await excelInstance.AtualizarCClassificacoesBanco(classificacoes);
 
@@ -120,7 +121,7 @@ namespace SincApiSefaz
 
                 produtosClassificacao = produtosClassificacao
                                         .OrderBy(p => p.CodigoNcm)
-                                        .ToList();         
+                                        .ToList();
 
 
                 //var ncms = new List<string>() { "30039069", "34011900", "22021000", "85169000", "30049099", "96190000", "30049099", "85363090", "87089100", "87088000" };
@@ -249,11 +250,35 @@ namespace SincApiSefaz
 
                     anexo++;
                 }
-              
+
             }
 
             string filePath = @"C:\lixo\produtos_classificados.xlsx";
             workbook.SaveAs(filePath);
+        }
+
+        private void btnTabNBS_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var caminhoArquivo = "";
+                using (var dialogo = new OpenFileDialog())
+                {
+                    caminhoArquivo = dialogo.ShowDialog() == DialogResult.OK ? dialogo.FileName : "";
+                }
+
+                if (string.IsNullOrWhiteSpace(caminhoArquivo))
+                    return;
+
+                var Nbs = new ImportacaoTabNbs();
+                var dados = Nbs.ExtrairDadosJson(caminhoArquivo);
+
+                Nbs.AtualizarTabNBS(dados);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao importar classificações tributárias: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }
