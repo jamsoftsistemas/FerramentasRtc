@@ -4,19 +4,36 @@ using System.Text.Json;
 
 namespace SincApiSefaz.Servicos;
 
-public class ImportacaoTabNbs
+public static class ImportacaoTabNbs
 {
-    public List<Nbs> ExtrairDadosJson(string arquivoJson)
+    public static async Task<string> BaixarJsonOnline(string url)
     {
-        var lista = JsonSerializer.Deserialize<List<Nbs>>(File.ReadAllText(arquivoJson));
+        using var http = new HttpClient();
+        try
+        {
+            string json = await http.GetStringAsync(url);
+            return json;
+        }
+        catch
+        {
+            return string.Empty;
+        }
+    }
+    public static List<Nbs> ExtrairDadosJson(string arquivoJson)
+    {
+        var lista = JsonSerializer.Deserialize<List<Nbs>>(arquivoJson);
+
+        if (lista is null || !lista.Any())
+            throw new JsonException("JSON inválido");
+
         return lista;
     }
 
-    public void AtualizarTabNBS(List<Nbs> dadosNBS)
+    public static async Task AtualizarTabNBS(List<Nbs> dadosNBS)
     {
         var nbsRepository = new NbsRepository();
         nbsRepository.DeleteTudo();
-        nbsRepository.Salvar(dadosNBS);
+        await nbsRepository.Salvar(dadosNBS);
     }
 
 }

@@ -6,6 +6,7 @@ using SincApiSefaz.Models.TabNBS;
 using SincApiSefaz.Models.TabNcm;
 using SincApiSefaz.Repositorios;
 using SincApiSefaz.Servicos;
+using System.Security.Policy;
 using System.Text.Json;
 using System.Windows.Forms;
 
@@ -257,23 +258,39 @@ namespace SincApiSefaz
             workbook.SaveAs(filePath);
         }
 
-        private void btnTabNBS_Click(object sender, EventArgs e)
+        private async void btnTabNBS_Click(object sender, EventArgs e)
         {
             try
             {
-                var caminhoArquivo = "";
-                using (var dialogo = new OpenFileDialog())
+                const string url = "https://www.unimake.com.br/downloads/tabela_nbs.json";
+
+                var json = "";
+                if (url.Length > 0)
                 {
-                    caminhoArquivo = dialogo.ShowDialog() == DialogResult.OK ? dialogo.FileName : "";
+                    json = await ImportacaoTabNbs.BaixarJsonOnline(url);
                 }
 
-                if (string.IsNullOrWhiteSpace(caminhoArquivo))
-                    return;
 
-                var Nbs = new ImportacaoTabNbs();
-                var dados = Nbs.ExtrairDadosJson(caminhoArquivo);
+                if (string.IsNullOrWhiteSpace(json))
+                {
+                    using (var dialogo = new OpenFileDialog())
+                    {
+                        var caminhoArquivo = dialogo.ShowDialog() == DialogResult.OK ? dialogo.FileName : "";
+                        if (!string.IsNullOrWhiteSpace(caminhoArquivo))
+                        {
+                            json = await File.ReadAllTextAsync(caminhoArquivo);
+                        }
 
-                Nbs.AtualizarTabNBS(dados);
+                    }
+                }
+
+                if (string.IsNullOrWhiteSpace(json))
+                    throw new FileNotFoundException("Arquivo JSON nao encontrado");
+
+
+                var dados = ImportacaoTabNbs.ExtrairDadosJson(json);
+
+                await ImportacaoTabNbs.AtualizarTabNBS(dados);
             }
             catch (Exception ex)
             {
